@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Maranao Tribe - People of the Lake</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 1rem 0;
+            background: linear-gradient(135deg, #1a3260 0%, #244580 100%);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeInLeft 0.8s ease forwards;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            opacity: 0;
+            animation: fadeInRight 0.8s ease forwards;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(
+                rgba(0,0,0,.65),   /* transparent dark overlay */
+                rgba(0,0,0,.65)
+              ),url("images/maranao.webp");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background: #ff6b6b;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        section {
+            padding: 5rem 2rem;
+            width: 100%;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            background-size: cover;       /* makes the image fill the box */
+            background-position: center;  /* centers the image */
+            background-repeat: no-repeat; /* prevents tiling */
+        }
+
+        .card:hover .image-placeholder {
+            transform: scale(1.05);
+        }
+
+        .card h3 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #1e3c72;
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            height: 250px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            background-size: cover;       /* makes the image fill the box */
+            background-position: center;  /* centers the image */
+            background-repeat: no-repeat; /* prevents tiling */
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        #about {
+        background: linear-gradient(rgba(127, 162, 185, 0.329),rgba(31, 51, 77, 0.65));
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 80px 20px;     /* spacing */
+        }
+
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .timeline::before {
+                left: 0;
+            }
+            
+            .timeline-content {
+                width: 100%;
+                margin-left: 2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="logo">Maranao Tribe</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#location">Location</a></li>
+                <li><a href="#culture">Culture</a></li>
+                <li><a href="#history">History</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>The Maranao Tribe</h1>
+            <p>Discover the rich heritage and vibrant culture of the "People of the Lake" - Lanao del Sur's indigenous Muslim community</p>
+            <a href="#about" class="cta-button">Explore Their Story</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-content">
+            <h2>About the Maranao People</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: white;">
+                The Maranao, meaning "People of the Lake," are one of the largest Muslim ethnic groups in the Philippines, 
+                primarily residing around Lake Lanao in Lanao del Sur, Mindanao. Known for their rich Islamic heritage, 
+                intricate okir art, and the iconic Torogan houses, the Maranao have preserved their unique culture and traditions for centuries.
+            </p>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/clothing.webp'); "></div>
+                    <h3>Traditional Clothing</h3>
+                    <p>The Maranao are known for their vibrant traditional attire, including the malong (tubular garment), elaborate Muslim dress, and colorful accessories. Their clothing reflects Islamic influence and indigenous artistic traditions.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/lakelanao.webp');"></div>
+                    <h3>Location</h3>
+                    <p>The Maranao primarily inhabit the areas surrounding Lake Lanao in Lanao del Sur, Mindanao. The lake is central to their identity, livelihood, and cultural practices.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/torogan.webp');"></div>
+                    <h3>Architecture</h3>
+                    <p>The Torogan is a traditional Maranao house, elevated on posts with elaborate okir carvings. These ancestral homes symbolize status and showcase the exceptional woodcarving skills of Maranao artisans.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="location" style="background: #f8f9fa;">
+        <div class="section-content">
+            <h2>Where They Live</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; margin-bottom: 3rem;">
+                The Maranao people primarily inhabit the provinces surrounding Lake Lanao in the Lanao region of Mindanao, Philippines. 
+                Their name "Maranao" literally translates to "People of the Lake," reflecting their deep connection to this body of water.
+            </p>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/lanaomap.webp'); "></div>
+                    <h3>Lanao del Sur</h3>
+                    <p>The majority of Maranao people live in Lanao del Sur province, with major population centers in Marawi City (the Islamic City of Marawi), Taraka, Marantao, and surrounding municipalities around Lake Lanao.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/marawi.webp'); "></div>
+                    <h3>Marawi City</h3>
+                    <p>Known as the "Islamic City of the Philippines," Marawi City serves as the cultural and economic center of the Maranao people. It is home to beautiful mosques, the Mindanao State University, and traditional Maranao architecture.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/lakelanao.webp'); "></div>
+                    <h3>Lake Lanao</h3>
+                    <p>Lake Lanao is the second largest lake in the Philippines and the heart of Maranao territory. At 780 feet above sea level, it provides water, transportation, and sustenance to the Maranao communities surrounding it.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/norte.webp'); "></div>
+                    <h3>Lanao del Norte</h3>
+                    <p>Some Maranao communities also reside in Lanao del Norte province, particularly in municipalities near the lake's northern shores, maintaining cultural ties with their Lanao del Sur relatives.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/other.webp'); "></div>
+                    <h3>Other Settlements</h3>
+                    <p>Maranao diaspora communities can be found throughout Mindanao and other parts of the Philippines, particularly in urban centers, though they maintain strong cultural and family connections to their ancestral homeland.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder">Geographic Features</div>
+                    <h3>Geographic Features</h3>
+                    <p>The Maranao territory is characterized by mountainous terrain, lush vegetation, and the dominant presence of Lake Lanao. The climate is tropical, with abundant rainfall supporting agriculture and the lake ecosystem.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="culture">
+        <div class="section-content">
+            <h2>Cultural Practices</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/singkil.webp'); "></div>
+                    <h3>Traditional Dances</h3>
+                    <p>The Maranao are famous for the Singkil dance, performed with bamboo poles and fans, depicting royal courtship. Other traditional dances include the Sagayan, a war dance showcasing martial prowess.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/okir.webp'); "></div>
+                    <h3>Okir Art</h3>
+                    <p>Okir is the distinctive Maranao art form featuring intricate curvilinear designs and motifs. This woodcarving and metalwork tradition adorns everything from houses to musical instruments and boats.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/about.webp'); "></div>
+                    <h3>Islamic Faith</h3>
+                    <p>Islam is central to Maranao identity and culture. The Maranao follow Islamic teachings while maintaining unique local traditions, creating a rich blend of religious and indigenous practices.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/cuisine.webp'); "></div>
+                    <h3>Cuisine</h3>
+                    <p>Maranao cuisine features rice, fish from Lake Lanao, and dishes influenced by Islamic dietary laws. Popular dishes include piyaparan (fish in spicy coconut sauce) and various rice-based delicacies.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder" style="background-image: url('images/kulintang.webp'); "></div>
+                    <h3>Music</h3>
+                    <p>The kulintang ensemble is central to Maranao music, consisting of bronze gongs arranged in a row. This ancient musical tradition is used in ceremonies, celebrations, and cultural performances.</p>
+                </div>
+                <div class="card">
+                    <div class="image-placeholder"style="background-image: url('images/darangen.webp'); "></div>
+                    <h3>Darangen Epic</h3>
+                    <p>The Darangen is a Maranao epic poem and oral tradition recognized by UNESCO. It narrates the adventures of legendary heroes and embodies Maranao values, history, and cultural wisdom.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="history" style="background: #f8f9fa;">
+        <div class="section-content">
+            <h2>Historical Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Pre-Islamic Era</h3>
+                        <p>Before the arrival of Islam, the Maranao practiced animistic beliefs and developed sophisticated metalworking and boat-building traditions around Lake Lanao.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Islamization (13th-14th Century)</h3>
+                        <p>Islam arrived through Arab and Malay traders and missionaries. The Maranao embraced Islam, which became integral to their identity while preserving indigenous cultural elements.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Sultanate Period</h3>
+                        <p>The Maranao established powerful sultanates around Lake Lanao, including the Sultanate of Lanao. These political structures governed Maranao society and resisted colonial powers.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Colonial Resistance</h3>
+                        <p>The Maranao fiercely resisted Spanish and American colonization, maintaining autonomy longer than most Philippine groups. Their resistance is a source of pride and cultural identity.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Modern Era</h3>
+                        <p>Today, the Maranao continue to preserve their Islamic faith, artistic traditions, and cultural heritage. They play a significant role in Mindanao's cultural landscape and Philippine Muslim society.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="section-content">
+            <h2>Gallery</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Visual documentation of Maranao culture and heritage</p>
+            <div class="gallery">
+                <div class="gallery-item" style="background-image: url('images/torogan.webp'); ">Torogan House</div>
+                <div class="gallery-item" style="background-image: url('images/singkil.webp'); ">Singkil Dance</div>
+                <div class="gallery-item"style="background-image: url('images/Okir.webp'); ">Okir Woodcarving</div>
+                <div class="gallery-item"style="background-image: url('images/clothing.webp'); ">Traditional Malong</div>
+                <div class="gallery-item"style="background-image: url('images/lakelanao.webp'); ">Lake Lanao</div>
+                <div class="gallery-item"style="background-image: url('images/kulintang.webp'); ">Kulintang</div>
+                <div class="gallery-item"style="background-image: url('images/metal.webp'); ">Brass & Metalwork</div>
+                <div class="gallery-item"style="background-image: url('images/about.webp'); ">Cultural Festival</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Maranao Tribe Heritage Site. Preserving Indigenous Culture.</p>
+        <p>Educational resource celebrating Philippine indigenous peoples</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling with slide effect
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for section animations
+        const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Card interaction
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
